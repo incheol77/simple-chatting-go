@@ -10,16 +10,16 @@ func main() {
 		w.Write([]byte(`
 		<html>
 			<head>
-				<title>Chat</title>
+				<title>Happy Chat</title>
 			</head>
 			<body>
-				Let's Chat!
+				Let's happy chat~!!
 			</body>
 		</html>
 		`))
 	})
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal("ListenAndServe:", err)
+		log.Fatal("ListenAndServe: ", nil)
 	}
 }
