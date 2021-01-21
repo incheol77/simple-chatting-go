@@ -1,8 +1,46 @@
 <html>
     <head>
-        <title>Happy Chat</title>
+        <title>Simple Chat</title>
+        <style>
+            input { display: block; }
+            ul { list-style: none; }
+        </style>
     </head>
     <body>
-        Let's happy chat~!! (from template) 
+        <ul id="messages"></ul>
+        <form id="chatbox">
+            <textarea> </textarea>
+            <input type="submit" value="Send" />
+        </form>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+        </script>
+        <script>
+            $(function() {
+                var socket = null;
+                var msgBox = $("#chatbox textarea");
+                var messages = $("#messages");
+                $("#chatbox").submit(function() {
+                    if (!msgBox.val()) return false;
+                    if (!socket) {
+                        alert("Error: cannot find socket connection");
+                        return false;
+                    }
+                    socket.send(msgBox.val());
+                    msgBox.val("");
+                    return false;
+                });
+                if (!window["WebSocket"]) {
+                    alert("Error: Browser do not support websocket");
+                } else {
+                    socket = new WebSocket("ws://{{.Host}}/room");
+                    socket.onclose = function() {
+                        alert("Close the connection")
+                    }
+                    socket.onmessage = function(e) {
+                        messages.append($("<li>").text(e.data));
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
