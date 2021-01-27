@@ -32,8 +32,11 @@ func main() {
 
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
+	http.Handle("/assets", http.StripPrefix("/assets",
+		http.FileServer(http.Dir("/Users/ickim/dev/go/src/pet-projects/simple-chatting-go/assets"))))
 	// http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
+	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.Handle("/room", r)
 
 	go r.run()
